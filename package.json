@@ -2,7 +2,7 @@
   "name": "@startsiden/githubhook",
   "description": "a simple github post-receive hook",
   "author": "Nathan LaFreniere",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "./index.js",
   "repository": {
     "type": "git",
