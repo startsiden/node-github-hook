@@ -106,6 +106,19 @@ function serverHandler(req, res) {
             return reply(400, res);
         }
 
+        // Handle Ping event (for organizations as well)
+        if (event === 'ping'){
+            // Check for valid ping event
+            if((data.repository && data.repository.name) || (data.organization && data.organization.login)){
+                self.emit('*', event, null, null, data);
+                self.emit(event, null, null, data);
+                return reply(200, res);
+            } else {
+                self.logger.error(Util.format('received incomplete ping event from %s, returning 400', remoteAddress));
+                return reply(400, res);
+            }
+        }
+
         // handle GitLab system hook
         if (event !== 'system'){
             // invalid json
