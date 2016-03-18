@@ -74,7 +74,7 @@ function serverHandler(req, res) {
             //this is already a string when sent as JSON
             data = Buffer.concat(buffer, bufferLength);
         }
-        
+
         // if a secret is configured, make sure the received signature is correct
         if (self.secret) {
             var signature = req.headers['x-hub-signature'];
@@ -99,6 +99,11 @@ function serverHandler(req, res) {
         data = parse(data);
 
         var event = req.headers['x-github-event'] || (req.headers['x-gitlab-event'] ? req.headers['x-gitlab-event'].split(' ')[0].toLowerCase() : 'unknown');
+
+        data.eventHeader = 'github';
+        if(req.headers['x-gitlab-event']) {
+          data.eventHeader = 'gitlab';
+        }
 
         // invalid json
         if (!data) {
